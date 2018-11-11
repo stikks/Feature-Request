@@ -1,14 +1,13 @@
 ![Logo of the project](https://github.com/stikks/Feature-Request/blob/master/logo.png)
 
-# Interview Calendar API
+# Feature Request Web Application
 > Additional information or tagline
 
-A brief description of your project, what it is used for and how does life get
-awesome when someone starts to use it.
+A web application that allows the user to create "feature requests". A "feature request" is a request for a new feature that will be added onto an existing piece of software. 
 
 ## Installing / Getting started
 
-A quick introduction of the minimal setup you need to get the interview calendar api up & running.
+A quick introduction of the minimal setup you need to get the feature requests web application up & running.
 
 This app was built using Flask microframework, you can find the list of dependencies in the requirements.txt file
 
@@ -31,8 +30,8 @@ To setup the application, you need to have the following installed
  - postgresql ( database )
 
 ```shell
-git clone https://github.com/stikks/Interview_Calendar.git
-cd Interview_Calendar
+git clone https://github.com/stikks/Feature-Request.git
+cd Feature-Request
 
 # create a virtual environment
 virtualenv venv
@@ -44,7 +43,7 @@ psql -U {username} -h {host} -c "create database {db name}"
 
 ## postgresql configuration
 default postgresql connection URI
- - SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost/interview"
+ - SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost/feature_requests"
    - "postgresql://{username}:{password}@{host}/{db name}"
 
  change value in "config.py" to match
@@ -85,9 +84,9 @@ This project using Flask microframework and adopts the PEP8 styling guide
 
 ## Links
 
-- Project homepage: https://github.com/stikks/Interview_Calendar
-- Repository: https://github.com/stikks/Interview_Calendar.git
-- Issue tracker: https://github.com/stikks/Interview_Calendar/issues
+- Project homepage: https://github.com/stikks/Feature-Request
+- Repository: https://github.com/stikks/Feature-Request.git
+- Issue tracker: https://github.com/stikks/Feature-Request/issues
   - In case of sensitive bugs like security vulnerabilities, please contact
     oladipoqudus@gmail.com directly instead of using issue tracker. We value your effort
     to improve the security and privacy of this project!
