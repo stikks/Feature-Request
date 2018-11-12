@@ -1,4 +1,4 @@
-![Logo of the project](https://github.com/stikks/Feature-Request/blob/master/logo.png)
+![Logo of the project](https://github.com/stikks/Feature-Request/blob/master/static/images/logo.png)
 
 # Feature Request Web Application
 > Additional information or tagline

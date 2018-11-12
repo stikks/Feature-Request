@@ -2,7 +2,7 @@
 import os
 
 # import flask app
-from app import app
+from application import app
 
 # run application
 if __name__ == '__main__':
