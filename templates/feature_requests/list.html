@@ -1,10 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'layout.html' %}
+{% block body %}
+    <section class="body">
 
-</body>
-</html>
+            {% include 'partials/header.html' %}
+
+			<div class="inner-wrapper">
+				{% include 'partials/sidebar.html' %}
+
+				<section role="main" class="content-body">
+					<header class="page-header">
+						<h2>Home</h2>
+
+						<div class="right-wrapper pull-right">
+							<ol class="breadcrumbs">
+								<li>
+									<a href="{{ url_for('index') }}">
+										<i class="fa fa-home"></i>
+									</a>
+								</li>
+								<li><span>Feature Requests</span></li>
+								<li><span>List</span></li>
+							</ol>
+
+							<a class="sidebar-right-toggle" data-open="sidebar-right"></a>
+						</div>
+					</header>
+
+					<!-- start: page -->
+						<section class="panel">
+							<header class="panel-heading">
+								<div class="panel-actions">
+									<a href="#" class="fa fa-caret-down"></a>
+									<a href="#" class="fa fa-times"></a>
+								</div>
+
+								<h2 class="panel-title">Feature Requests</h2><br>
+								<a class="btn btn-info btn-sm" href='/clients/{{obj_client.slug}}/feature-requests/new'> Add New</a>
+							</header>
+							<div class="panel-body">
+								<table class="table table-bordered table-striped" id="datatable-ajax" data-url="/ajax/{{obj_client.slug}}/feature-requests">
+									<thead>
+										<tr>
+											<th width="10%">Title</th>
+											<th width="40%">Description</th>
+											<th width="15%">Client</th>
+											<th width="5%">Priority</th>
+											<th width="15%">Target Date</th>
+                                            <th width="15%">Product Area</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</section>
+					<!-- end: page -->
+				</section>
+			</div>
+		</section>
+{% endblock %}
+
+{% block script %}
+
+	<script>
+		(function( $ ) {
+
+			'use strict';
+
+			var datatableInit = function() {
+
+				var $table = $('#datatable-ajax');
+				$table.dataTable({
+					bProcessing: true,
+					sAjaxSource: $table.data('url')
+				});
+
+			};
+
+			$(function() {
+				datatableInit();
+			});
+
+		}).apply( this, [ jQuery ]);
+	</script>
+{% endblock %}

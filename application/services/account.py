@@ -1,6 +1,12 @@
+from flask import current_app
 from flask_login import login_user, logout_user
 
 from application import models
+
+from . import BaseService
+
+
+EmployeeService = BaseService.create_model_service(models.Employee)
 
 
 def register(email, password, first_name, last_name):
@@ -20,32 +26,47 @@ def register(email, password, first_name, last_name):
     """
 
     try:
-        return models.Employee.create(email=email, first_name=first_name, last_name=last_name)
+        return EmployeeService.objects_new(**dict(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=current_app.bcrypt.generate_password_hash(password).decode('utf-8')
+        ))
     except Exception:
         raise
 
 
-def login(email, password):
+def login(email, password, remember=False):
     """
-    authenticates a user using given email and password
+    authenticates a employee using given email and password
 
-    This authenticates a user with the input email and
-    password. if user not found or credentials invalid,
-    returns None else returns user
+    This authenticates a employee with the input email and
+    password. if employee not found or credentials invalid,
+    returns None else returns employee
 
     :param email:
     :param password:
+    :param remember
     :return:
     """
 
-    pass
+    # check if employee exists
+    employee = EmployeeService.objects_filter(**dict(email=email), first_only=True)
+
+    # if user and passwords match, login user
+    # and return user object
+    if employee and current_app.bcrypt.check_password_hash(employee.password, password):
+        login_user(employee, remember=remember)
+        return employee
+
+    return None
 
 
 def logout():
     """
-    Logs out a user
+    Logs out a employee
 
-    :param user:
+    :param employee:
     :return:
     """
 

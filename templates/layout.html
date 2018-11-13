@@ -22,6 +22,11 @@
 		<link rel="stylesheet" href="/static/vendor/magnific-popup/magnific-popup.css" />
 		<link rel="stylesheet" href="/static/vendor/bootstrap-datepicker/css/datepicker3.css" />
 
+		<!-- Specific Page Vendor CSS -->
+		<link rel="stylesheet" href="/static/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
+		<link rel="stylesheet" href="/static/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
+		<link rel="stylesheet" href="/static/vendor/morris/morris.css" />
+
 		<!-- Theme CSS -->
 		<link rel="stylesheet" href="/static/stylesheets/theme.css" />
 
@@ -33,6 +38,16 @@
 
 		<!-- Head Libs -->
 		<script src="/static/vendor/modernizr/modernizr.js"></script>
+
+		<style>
+			.error {
+				color: red
+			}
+
+			.success {
+				color: green
+			}
+		</style>
 
 	</head>
 	<body>
@@ -49,6 +64,33 @@
 		<script src="/static/vendor/magnific-popup/magnific-popup.js"></script>
 		<script src="/static/vendor/jquery-placeholder/jquery.placeholder.js"></script>
 
+		<!-- Specific Page Vendor -->
+		<script src="/static/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js"></script>
+		<script src="/static/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js"></script>
+		<script src="/static/vendor/jquery-appear/jquery.appear.js"></script>
+		<script src="/static/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+		<script src="/static/vendor/jquery-easypiechart/jquery.easypiechart.js"></script>
+		<script src="/static/vendor/flot/jquery.flot.js"></script>
+		<script src="/static/vendor/flot-tooltip/jquery.flot.tooltip.js"></script>
+		<script src="/static/vendor/flot/jquery.flot.pie.js"></script>
+		<script src="/static/vendor/flot/jquery.flot.categories.js"></script>
+		<script src="/static/vendor/flot/jquery.flot.resize.js"></script>
+		<script src="/static/vendor/jquery-sparkline/jquery.sparkline.js"></script>
+		<script src="/static/vendor/raphael/raphael.js"></script>
+		<script src="/static/vendor/morris/morris.js"></script>
+		<script src="/static/vendor/gauge/gauge.js"></script>
+		<script src="/static/vendor/snap-svg/snap.svg.js"></script>
+		<script src="/static/vendor/liquid-meter/liquid.meter.js"></script>
+		<script src="/static/vendor/jqvmap/jquery.vmap.js"></script>
+		<script src="/static/vendor/jqvmap/data/jquery.vmap.sampledata.js"></script>
+		<script src="/static/vendor/jqvmap/maps/jquery.vmap.world.js"></script>
+		<script src="/static/vendor/jqvmap/maps/continents/jquery.vmap.africa.js"></script>
+		<script src="/static/vendor/jqvmap/maps/continents/jquery.vmap.asia.js"></script>
+		<script src="/static/vendor/jqvmap/maps/continents/jquery.vmap.australia.js"></script>
+		<script src="/static/vendor/jqvmap/maps/continents/jquery.vmap.europe.js"></script>
+		<script src="/static/vendor/jqvmap/maps/continents/jquery.vmap.north-america.js"></script>
+		<script src="/static/vendor/jqvmap/maps/continents/jquery.vmap.south-america.js"></script>
+
 		<!-- Theme Base, Components and Settings -->
 		<script src="/static/javascripts/theme.js"></script>
 
@@ -58,5 +100,16 @@
 		<!-- Theme Initialization Files -->
 		<script src="/static/javascripts/theme.init.js"></script>
 
+		<!-- Specific Page Vendor -->
+		<script src="/static/vendor/select2/select2.js"></script>
+		<script src="/static/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+		<script src="/static/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
+
+		{% block script %}
+		{% endblock %}
+
+		<!-- Examples -->
+		<!--<script src="/static/javascripts/tables/datatables.ajax.js"></script>-->
+
 	</body>
-</html>
+</html>`

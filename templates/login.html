@@ -13,16 +13,33 @@
 				</div>
 				<div class="panel-body">
 					<form action="{{ request.path }}" method="post">
+						{% with messages = get_flashed_messages(with_categories=true) %}
+						  {% if messages %}
+							<ul class=flashes>
+							{% for category, message in messages %}
+							  <li class="{{ category }}">{{ message }}</li>
+							{% endfor %}
+							</ul>
+						  {% endif %}
+						{% endwith %}
+						{{ form.hidden_tag() }}
 						<div class="form-group mb-lg">
 							<label>Email</label>
 							<div class="input-group input-group-icon">
-								<input name="email" type="text" class="form-control input-lg" required />
+								<input name="email" type="text" class="form-control input-lg" value="{{ form.email.data }}" placeholder="abc@iws.com" required />
 								<span class="input-group-addon">
 									<span class="icon icon-lg">
 										<i class="fa fa-user"></i>
 									</span>
 								</span>
 							</div>
+							{% if form.email.errors %}
+								<ul class=errors>
+								{% for error in form.email.errors %}
+								  <li>{{ error }}</li>
+								{% endfor %}
+								</ul>
+							{% endif %}
 						</div>
 
 						<div class="form-group mb-lg">
@@ -30,7 +47,7 @@
 								<label class="pull-left">Password</label>
 							</div>
 							<div class="input-group input-group-icon">
-								<input name="pwd" type="password" class="form-control input-lg" required />
+								<input name="password" type="password" class="form-control input-lg" required />
 								<span class="input-group-addon">
 									<span class="icon icon-lg">
 										<i class="fa fa-lock"></i>
@@ -42,7 +59,7 @@
 						<div class="row">
 							<div class="col-sm-8">
 								<div class="checkbox-custom checkbox-default">
-									<input id="RememberMe" name="rememberme" type="checkbox"/>
+									<input id="RememberMe" name="remember" type="checkbox"/>
 									<label for="RememberMe">Remember Me</label>
 								</div>
 							</div>

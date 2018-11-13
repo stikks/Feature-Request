@@ -1,29 +1,6 @@
 from application import models
 
-
-def clients_all():
-    """
-    returns list of registered clients
-    :return:
-    """
-    return models.Client.query.all()
+from application.services import BaseService
 
 
-def clients_new(first_name, last_name, email):
-    """
-    creates a new client
-
-    creates new entry in clients table using provided
-    parameters. It returns a new client object if created
-    else it raises an exception
-
-    :param first_name:
-    :param last_name:
-    :param email:
-    :return:
-    """
-
-    try:
-        return models.Client.create(first_name=first_name, last_name=last_name, email=email)
-    except Exception:
-        raise
+ClientService = BaseService.create_model_service(models.Client)
