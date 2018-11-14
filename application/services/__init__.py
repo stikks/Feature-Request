@@ -23,27 +23,42 @@ class BaseService(object):
         class Base(object):
 
             @classmethod
-            def objects_all(cls):
+            def objects_all(cls, order_by='date_created', order_direction='desc',):
                 """
                 retrieve all model objects
+
+                orders model list by date_created if no value passed
+                :param order_by
+                :param order_direction 
                 :return:
                 """
-                return cls.model_class.query.all()
+                order_field = getattr(cls.model_class, order_by)
+                order_method = getattr(order_field, order_direction)
+                return cls.model_class.query.order_by(order_method()).all()
 
             @classmethod
-            def objects_filter(cls, first_only=True, **kwargs):
+            def objects_filter(cls, first_only=True, order_by='date_created', order_direction='desc', **kwargs):
                 """
                 retrieve objects matching filter params
 
                 returns a filtered query result for a model.
                 If first_only passed as True, first object is
                 returned else list of objects returned.
+                orders list by date_created in descending order 
+                if order_by and order_direction not passed.
+
                 :param first_only
+                :param order_by
                 :param kwargs:
                 :return:
                 """
                 try:
-                    filtered = cls.model_class.query.filter_by(**kwargs)
+                    order_field = getattr(cls.model_class, order_by)
+                    order_method = getattr(order_field, order_direction)
+
+                    print(order_direction, order_field)
+
+                    filtered = cls.model_class.query.filter_by(**kwargs).order_by(order_method())
                     return filtered.first() if first_only else filtered.all()
                 except InvalidRequestError as e:
                     logger.exception(e)

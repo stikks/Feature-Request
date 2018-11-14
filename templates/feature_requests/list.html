@@ -36,6 +36,17 @@
 
 								<h2 class="panel-title">Feature Requests</h2><br>
 								<a class="btn btn-info btn-sm" href='/clients/{{obj_client.slug}}/feature-requests/new'> Add New</a>
+								<div class="text_center">
+									{% with messages = get_flashed_messages(with_categories=true) %}
+										{% if messages %}
+											<ul class=flashes>
+												{% for category, message in messages %}
+													<li class="{{ category }}">{{ message }}</li>
+												{% endfor %}
+											</ul>
+										{% endif %}
+									{% endwith %}
+								</div>
 							</header>
 							<div class="panel-body">
 								<table class="table table-bordered table-striped" id="datatable-ajax" data-url="/ajax/{{obj_client.slug}}/feature-requests">
@@ -71,6 +82,7 @@
 
 				var $table = $('#datatable-ajax');
 				$table.dataTable({
+					order: [[ 3, "asc" ]],
 					bProcessing: true,
 					sAjaxSource: $table.data('url')
 				});

@@ -40,11 +40,20 @@
 									</header>
 									<div class="panel-body">
 										<form class="form-horizontal form-bordered" method="post" action="{{ request.path }}">
+											{{ form.hidden_tag() }}
+											<input type="hidden" name="client_id" value="{{ obj_client.id }}">
 											<div class="form-group">
 												<label for="title" class="col-md-3 control-label">Title</label>
 												<div class="col-md-7">
 													<input name="title" id="title" data-role="title" data-tag-class="label label-primary" class="form-control" value="{{ form.title.data }}" required />
-
+													<br>
+													{% if form.title.errors %}
+														<ul class='error'>
+															{% for error in form.title.errors %}
+															<li>{{ error }}</li>
+															{% endfor %}
+														</ul>
+													{% endif %}
 												</div>
 											</div>
 											<div class="form-group">
@@ -53,25 +62,48 @@
 													<textarea name="description" class="form-control" rows="3" data-plugin-maxlength maxlength="140" id="description" required>{{ form.description.data }}</textarea>
 													<p>
 														<code>max-length</code> set to 140.
-													</p>
+													</p><br>
+													{% if form.description.errors %}
+														<ul class='error'>
+															{% for error in form.description.errors %}
+															<li>{{ error }}</li>
+															{% endfor %}
+														</ul>
+													{% endif %}
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="col-md-3 control-label">Product Area</label>
 												<div class="col-md-7">
-													<select data-plugin-selectTwo class="form-control populate">
+													<select data-plugin-selectTwo class="form-control populate" name="product_area_id" value="{{ form.product_area_id.data }}">
 														<optgroup label="Product Areas">
 															{% for area in product_areas %}
 																<option value="{{ area.id }}">{{ area.title }}</option>
 															{% endfor %}
 														</optgroup>
 													</select>
+													<br>
+													{% if form.product_area_id.errors %}
+														<ul class='error'>
+															{% for error in form.product_area_id.errors %}
+															<li>{{ error }}</li>
+															{% endfor %}
+														</ul>
+													{% endif %}
 												</div>
 											</div>
 											<div class="form-group">
 												<label for="client_priority" class="col-md-3 control-label">Priority</label>
 												<div class="col-md-7">
-													<input name="client_priority" id="client_priority" data-role="client_priority" type="number" data-tag-class="label label-primary" class="form-control" value="{{ form.client_priority.data }}" required />
+													<input name="client_priority" min="1" id="client_priority" data-role="client_priority" type="number" data-tag-class="label label-primary" class="form-control" value="{{ form.client_priority.data }}" required />
+													<br>
+													{% if form.client_priority.errors %}
+														<ul class='error'>
+															{% for error in form.client_priority.errors %}
+															<li>{{ error }}</li>
+															{% endfor %}
+														</ul>
+													{% endif %}
 												</div>
 											</div>
 
@@ -82,8 +114,21 @@
 														<span class="input-group-addon">
 															<i class="fa fa-calendar"></i>
 														</span>
-														<input id="target_date" name="target_date" data-plugin-masked-input data-input-mask="99/99/9999" placeholder="__/__/____" class="form-control">
+														<input id="target_date" name="target_date" type="date" data-plugin-masked-input data-input-mask="99/99/9999" placeholder="__/__/____" class="form-control">
 													</div>
+													{% if form.target_date.errors %}
+														<ul class='error'>
+															{% for error in form.target_date.errors %}
+															<li>{{ error }}</li>
+															{% endfor %}
+														</ul>
+													{% endif %}
+												</div>
+											</div>
+
+											<div class="form-group">
+												<div class="col-md-3">
+													<button type="submit" class="btn btn-sm btn-success">Submit</button>
 												</div>
 											</div>
 

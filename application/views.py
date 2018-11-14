@@ -39,7 +39,7 @@ def login():
 
     :return:
     """
-
+    title = 'Sign In'
     form = forms.LoginForm()
 
     if request.method == 'POST' and form.validate_on_submit():
@@ -79,6 +79,8 @@ def index():
     if none found
     :return:
     """
+    title = 'Home'
+
     return render_template('index.html', **locals())
 
 
@@ -96,11 +98,13 @@ def feature_requests_list(client_slug):
 
     if not obj_client:
         raise abort(404)
+    
+    title = f'{obj_client.name}'
 
     return render_template('feature_requests/list.html', **locals())
 
 
-@current_app.route('/clients/<client_slug>/feature-requests/new', methods=['GET'])
+@current_app.route('/clients/<client_slug>/feature-requests/new', methods=['GET', 'POST'])
 @login_required
 def feature_request_create(client_slug):
     """
@@ -115,9 +119,20 @@ def feature_request_create(client_slug):
     if not obj_client:
         raise abort(404)
 
+    title = f'{obj_client.name}'
+
     product_areas = feature.ProductAreaService.objects_all()
 
-    form = forms.FeatureRequestForm(client_id=obj_client.id)
+    form = forms.FeatureRequestForm()
+
+    if request.method == 'POST' and form.validate_on_submit():
+        data = form.data.copy()
+        data.pop('csrf_token')
+        feature_request = feature.FeatureRequestService.objects_new(**data)
+
+        if feature_request:
+            flash('successfully created feature request')
+            return redirect(url_for('feature_requests_list', client_slug=obj_client.slug))
 
     return render_template('feature_requests/new.html', **locals())
 
