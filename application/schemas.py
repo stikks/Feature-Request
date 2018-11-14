@@ -17,7 +17,7 @@ class ProductAreaSchema(current_app.marshmallow.ModelSchema):
 class FeatureRequestSchema(current_app.marshmallow.ModelSchema):
     class Meta:
         model = models.FeatureRequest
-        fields = ('id', 'title', 'description', 'client', 'product_area', 'client_priority', 'target_date', 'date_created', 'date_updated')
-    # client = ClientSchema('client_id')
+        fields = ('id', 'title', 'description', 'client', 'product_area', 'priority', 'target_date', 'date_created',
+                  'date_updated')
     client = fields.Nested(ClientSchema)
     product_area = fields.Nested(ProductAreaSchema)

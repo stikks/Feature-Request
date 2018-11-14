@@ -9,7 +9,6 @@ from flask_login import UserMixin
 # Import SQLAlchemy
 from sqlalchemy.inspection import inspect
 from sqlalchemy import event
-from flask_sqlalchemy import SQLAlchemy
 
 # import slugify
 from slugify import slugify
@@ -52,9 +51,7 @@ class Serializer(object):
 
 with current_app.app_context():
 
-    # Define database object
-    db = SQLAlchemy()
-    db.init_app(current_app)
+    db = current_app.db
 
     class Abstract(db.Model, Serializer):
         __abstract__ = True
@@ -108,11 +105,11 @@ with current_app.app_context():
         client_id = db.Column(db.Integer, db.ForeignKey('client.id'), nullable=False)
         client = db.relationship('Client')
 
-        client_priority = db.Column(db.Integer, nullable=False)
+        priority = db.Column(db.Integer, nullable=False)
         target_date = db.Column(db.Date, nullable=False)
 
         product_area_id = db.Column(db.Integer, db.ForeignKey('product_area.id'), nullable=False)
         product_area = db.relationship('ProductArea')
 
         def __repr__(self):
-            return f'<FeatureRequest: Title - {self.title}, Priority - {self.client_priority}>'
+            return f'<FeatureRequest: Title - {self.title}, Priority - {self.priority}>'

@@ -131,7 +131,7 @@ def feature_request_create(client_slug):
         feature_request = feature.FeatureRequestService.objects_new(**data)
 
         if feature_request:
-            flash('successfully created feature request')
+            flash('successfully created feature request', 'success')
             return redirect(url_for('feature_requests_list', client_slug=obj_client.slug))
 
     return render_template('feature_requests/new.html', **locals())

@@ -1,4 +1,6 @@
-from flask import Flask
+from logging.handlers import RotatingFileHandler
+
+from flask import Flask, logging as flask_logging
 
 # import login manager
 from flask_login import LoginManager
@@ -6,8 +8,8 @@ from flask_login import LoginManager
 # Import Migrate
 from flask_migrate import Migrate
 
-# Import CORS
-from flask_cors import CORS
+# import sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
 
 # Import bcrypt
 from flask_bcrypt import Bcrypt
@@ -32,9 +34,17 @@ with app.app_context():
     from . import models, forms
     migrate = Migrate(app, models.db)
 
-    # # create log file, attach to application
-    # from .services import utils
-    # app.logger = utils.create_log_file('feature_requests.log')
+    # Define database object
+    db = SQLAlchemy()
+    db.init_app(app)
+    app.db = db
+
+    # add a rotating file handler
+    handler = RotatingFileHandler('feature_requests.log', maxBytes=15000, backupCount=2)
+    app.logger.addHandler(handler)
+
+    # remove default logging handler
+    app.logger.removeHandler(flask_logging.default_handler)
 
     # initialize flask login
     login_manager = LoginManager()
@@ -45,9 +55,6 @@ with app.app_context():
     # setup bcrypt for encrypting password
     bcrypt = Bcrypt(app)
     app.bcrypt = bcrypt
-
-    # initialize cors
-    CORS(app)
 
     # initialize marshmallow for serialization
     marshmallow = Marshmallow(app)

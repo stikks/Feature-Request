@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ -z $POSTGRES_USER && -z $POSTGRES_DATABASE && -z $POSTGRES_HOST ]]; then
+if [ -z $POSTGRES_USER ] || [ -z $POSTGRES_DATABASE ] || [ -z $POSTGRES_HOST ]; then
     echo 'You need to set environment variables POSTGRES_USER, POSTGRES_HOST and POSTGRES_DATABASE'; exit $ERRCODE;
 fi
 
@@ -10,7 +10,7 @@ pip3 install -U virtualenv
 
 # activate virtual environment
 echo 'activating virtual environment'
-virtualenv venv
+virtualenv -p python3 venv
 source venv/bin/activate
 
 # install required packages
@@ -27,7 +27,7 @@ export FLASK_ENV='development'
 # setup migrations and migrate database
 echo 'setup migrations and upgrade'
 flask db init
-flask db migrate 
+flask db migrate
 flask db upgrade
 
 # setup application

@@ -55,9 +55,6 @@ class BaseService(object):
                 try:
                     order_field = getattr(cls.model_class, order_by)
                     order_method = getattr(order_field, order_direction)
-
-                    print(order_direction, order_field)
-
                     filtered = cls.model_class.query.filter_by(**kwargs).order_by(order_method())
                     return filtered.first() if first_only else filtered.all()
                 except InvalidRequestError as e:
