@@ -1,3 +1,6 @@
+"""
+application models
+"""
 import datetime
 
 # import flask application
@@ -15,11 +18,22 @@ from slugify import slugify
 
 
 def generate_slug(target, value, oldvalue, initiator):
+    """
+    generates slug
+
+    :param target
+    :param value
+    :param oldvalue
+    :param initiator
+    """
     if value and (not target.slug or value != oldvalue):
         target.slug = slugify(value)
 
 
 class Serializer(object):
+    """
+    adds serialization to model objects
+    """
 
     def serialize(self):
         """
@@ -27,15 +41,15 @@ class Serializer(object):
         :return:
         """
         output = dict()
-        for c in inspect(self).attrs.keys():
-            if c not in getattr(self, '__exclude__'):
+        for key in inspect(self).attrs.keys():
+            if key not in getattr(self, '__exclude__'):
                 # retrieve attribute not excluded
-                if isinstance(getattr(self, c), datetime.time):
-                    output[c] = getattr(self, c).isoformat()
-                elif isinstance(getattr(self, c), db.Model):
-                    output[c] = getattr(self, c).serialize()
+                if isinstance(getattr(self, key), datetime.time):
+                    output[key] = getattr(self, key).isoformat()
+                elif isinstance(getattr(self, key), DB.Model):
+                    output[key] = getattr(self, key).serialize()
                 else:
-                    output[c] = getattr(self, c)
+                    output[key] = getattr(self, key)
 
         return output
 
@@ -51,30 +65,39 @@ class Serializer(object):
 
 with current_app.app_context():
 
-    db = current_app.db
+    DB = current_app.db
 
-    class Abstract(db.Model, Serializer):
+    class Abstract(DB.Model, Serializer):
+        """ 
+        Abstract base class for model objects
+        
+        adds default variables id, date_created
+        and date_updated. Inherited by other models
+        to avoid repetition.
+        """
         __abstract__ = True
         __exclude__ = ['id']
 
-        id = db.Column(db.Integer, primary_key=True)
-        date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-        date_updated = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+        id = DB.Column(DB.Integer, primary_key=True)
+        date_created = DB.Column(DB.DateTime, default=DB.func.current_timestamp())
+        date_updated = DB.Column(DB.DateTime, default=DB.func.current_timestamp(), onupdate=DB.func.current_timestamp())
 
 
     class Employee(Abstract, UserMixin):
-        first_name = db.Column(db.String(255), nullable=False)
-        last_name = db.Column(db.String(255), nullable=False)
-        email = db.Column(db.String(200), unique=True, nullable=False)
-        password = db.Column(db.Text)
+        """ Employee model class"""
+        first_name = DB.Column(DB.String(255), nullable=False)
+        last_name = DB.Column(DB.String(255), nullable=False)
+        email = DB.Column(DB.String(200), unique=True, nullable=False)
+        password = DB.Column(DB.Text)
 
         def __repr__(self):
             return f'<Employee: {self.first_name} {self.last_name}>'
 
 
     class Client(Abstract):
-        name = db.Column(db.Text, nullable=False)
-        slug = db.Column(db.String(200))
+        """ Client model class"""
+        name = DB.Column(DB.Text, nullable=False)
+        slug = DB.Column(DB.String(200))
 
         def __repr__(self):
             return f'<Client: {self.name}>'
@@ -84,32 +107,29 @@ with current_app.app_context():
 
 
     class ProductArea(Abstract):
-        slug = db.Column(db.String(255), nullable=False)
-        title = db.Column(db.String(255), nullable=False)
+        """ ProductArea model class"""
+        slug = DB.Column(DB.String(255), nullable=False)
+        title = DB.Column(DB.String(255), nullable=False)
 
         def __repr__(self):
             return f'<ProductArea: {self.title}>'
-
-        # @staticmethod
-        # def generate_slug(target, value, oldvalue, initiator):
-        #     if value and (not target.slug or value != oldvalue):
-        #         target.slug = slugify(value)
 
     # event listener for generating slug
     event.listen(ProductArea.title, 'set', generate_slug, retval=False)
 
 
     class FeatureRequest(Abstract):
-        title = db.Column(db.String(255), nullable=False)
-        description = db.Column(db.Text, nullable=False)
-        client_id = db.Column(db.Integer, db.ForeignKey('client.id'), nullable=False)
-        client = db.relationship('Client')
+        """ FeatureRequest model class"""
+        title = DB.Column(DB.String(255), nullable=False)
+        description = DB.Column(DB.Text, nullable=False)
+        client_id = DB.Column(DB.Integer, DB.ForeignKey('client.id'), nullable=False)
+        client = DB.relationship('Client')
 
-        priority = db.Column(db.Integer, nullable=False)
-        target_date = db.Column(db.Date, nullable=False)
+        priority = DB.Column(DB.Integer, nullable=False)
+        target_date = DB.Column(DB.Date, nullable=False)
 
-        product_area_id = db.Column(db.Integer, db.ForeignKey('product_area.id'), nullable=False)
-        product_area = db.relationship('ProductArea')
+        product_area_id = DB.Column(DB.Integer, DB.ForeignKey('product_area.id'), nullable=False)
+        product_area = DB.relationship('ProductArea')
 
         def __repr__(self):
             return f'<FeatureRequest: Title - {self.title}, Priority - {self.priority}>'

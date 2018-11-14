@@ -1,3 +1,6 @@
+"""
+setup application
+"""
 from setuptools import find_packages, setup
 
 # open requirements file

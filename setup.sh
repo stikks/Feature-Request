@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ -z $POSTGRES_USER ] || [ -z $POSTGRES_DATABASE ] || [ -z $POSTGRES_HOST ]; then
-    echo 'You need to set environment variables POSTGRES_USER, POSTGRES_HOST and POSTGRES_DATABASE'; exit $ERRCODE;
+if [ -z $POSTGRES_USER ] || [ -z $POSTGRES_DATABASE ] || [ -z $POSTGRES_HOST ] || [ -z $POSTGRES_PASS ]; then
+    echo 'You need to set environment variables POSTGRES_USER, POSTGRES_HOST, POSTGRES_PASS and POSTGRES_DATABASE'; exit $ERRCODE;
 fi
 
 # setup virtual environment

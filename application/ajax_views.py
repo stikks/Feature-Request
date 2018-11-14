@@ -1,6 +1,7 @@
-import json
-
-from flask import current_app, request, abort, jsonify
+"""
+ajax route endpoints
+"""
+from flask import current_app, request, jsonify
 
 from .services import client, feature
 from . import schemas

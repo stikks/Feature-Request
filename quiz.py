@@ -8,9 +8,10 @@ message = b'gAAAAABb4fh_YHUxdg-DT_RRvszBNFmSBEht0Njd2yQQzUeWqUxc-Q7pq-oO_c7mVFUn
 
 
 def main():
-	f = Fernet(key)
-	print(f.decrypt(message))
+    """main application"""
+    f = Fernet(key)
+    print(f.decrypt(message))
 
 
 if __name__ == '__main__':
-	main()
+    main()

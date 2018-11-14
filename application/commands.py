@@ -1,3 +1,6 @@
+"""
+custom cli commands
+"""
 from application import app
 
 with app.app_context():
@@ -27,12 +30,12 @@ with app.app_context():
 
         clients = ['Client A', 'Client B', 'Client C']
         for obj in clients:
-            cs = client.ClientService.objects_new(**dict(name=obj))
-            print(f'successfully created dummy client account - {cs.name}')
+            client_service = client.ClientService.objects_new(**dict(name=obj))
+            print(f'successfully created dummy client account - {client_service.name}')
 
         product_areas = ['Policies', 'Billing', 'Claims', 'Reports']
         for area in product_areas:
-            pa = feature.ProductAreaService.objects_new(**dict(title=area))
-            print(f'successfully created dummy product areas - {pa.title}')
+            product_area = feature.ProductAreaService.objects_new(**dict(title=area))
+            print(f'successfully created dummy product areas - {product_area.title}')
 
         return True

@@ -1,3 +1,6 @@
+"""
+flask application
+"""
 # # use to retrieve environment variable
 import os
 

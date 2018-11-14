@@ -1,3 +1,6 @@
+"""
+application configuration variable
+"""
 import os
 
 # Secret key for signing cookies
@@ -10,7 +13,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DEBUG = True
 
 # Defining database address
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost/feature_requests"
+SQLALCHEMY_DATABASE_URI = f"postgresql://{os.getenv('POSTGRES_USER', 'postgres')}:{os.getenv('POSTGRES_PASS', 'postgres')}@{os.getenv('POSTGRES_HOST', 'localhost')}/{os.getenv('POSTGRES_DATABASE', 'feature_requests')}"
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 # Enable protection agains *Cross-site Request Forgery (CSRF)*

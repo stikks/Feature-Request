@@ -95,7 +95,7 @@
 											<div class="form-group">
 												<label for="priority" class="col-md-3 control-label">Priority</label>
 												<div class="col-md-7">
-													<input name="priority" min="1" id="priority" data-role="priority" type="number" data-tag-class="label label-primary" class="form-control" value="{{ form.priority.data }}" required />
+													<input name="priority" min="1" id="priority" data-role="priority" type="number" min="1" max="{{ max_value }}" data-tag-class="label label-primary" class="form-control" value="{{ form.priority.data }}" required />
 													<br>
 													{% if form.priority.errors %}
 														<ul class='error'>

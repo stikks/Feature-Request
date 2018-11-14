@@ -1,3 +1,7 @@
+"""
+feature requests service layer
+"""
+
 from application import models
 
 from application.services import BaseService
@@ -7,6 +11,13 @@ ProductAreaService = BaseService.create_model_service(models.ProductArea)
 
 
 class FeatureRequestService(BaseFeatureRequestService):
+    """
+    featureequest service class
+
+    custom modification to base class
+    basefeaturerequestservice to accomodate
+    re-ordering of priorities
+    """
 
     @classmethod
     def objects_new(cls, client_id, title, description, product_area_id, priority, target_date):
@@ -36,8 +47,8 @@ class FeatureRequestService(BaseFeatureRequestService):
             priority=priority,
             target_date=target_date
         )
-        models.db.session.add(record)
-        models.db.session.commit()
+        models.DB.session.add(record)
+        models.DB.session.commit()
 
         return record
 
@@ -59,69 +70,12 @@ class FeatureRequestService(BaseFeatureRequestService):
 
         feature_requests = feature_request_query.all()
 
-        feature_request = next((i for i in feature_requests if i.priority == priority), None)
+        for feature_request in feature_requests:
 
-        if not feature_request:
-            return True
-
-        feature_request.priority += 1
-        models.db.session.add(feature_request)
-        models.db.session.commit()
-
-        filtered_requests = list(filter(lambda x: x.priority != priority, feature_requests))
-
-        if len(filtered_requests) == 0:
-            return True
-
-        # feature_request = BaseFeatureRequestService.objects_filter(**dict(client_id=client_id, priority=priority))
-        #
-        # if not feature_request:
-        #     return True
-        i = 0
-        current = feature_request
-        while i < len(filtered_requests):
-            # feature_request = BaseFeatureRequestService.objects_filter(**dict(client_id=client_id, priority=priority))
-            #
-            # if not feature_request:
-            #     break
-
-            current_feature_request = filtered_requests[i]
-
-            if current_feature_request.priority - current.priority > 1:
-                break
-
-            current_feature_request.priority += 1
-            models.db.session.add(current_feature_request)
-            models.db.session.commit()
-
-            current = current_feature_request
-
-        # # retrieve feature requests with a priority greater than/equal to the new feature request
-        # feature_request_query = model_class.query.filter(model_class.client_id == client_id,
-        #                                                  model_class.priority >= priority).order_by(
-        #                                                     model_class.priority.asc())
-        # if not feature_request_query.count():
-        #     return True
-        #
-        # feature_request_query_all = feature_request_query.all()
-        #
-        # priority_check = 0
-        # while priority_check < len(feature_request_query_all):
-        #
-        #     # check if there's a feature request that matches current
-        #     # iteration index
-        #     current_feature_request = next((i for i in feature_request_query if i.priority == priority), None)
-        #     if not current_feature_request:
-        #         break
-        #
-        #     # increment priority of current feature request
-        #     current_feature_request.priority += 1
-        #     models.db.session.add(current_feature_request)
-        #
-        #     # save changes
-        #     models.db.session.commit()
-        #
-        #     # increment and check for matching feature request
-        #     priority_check += 1
+            # increment priority on each feature
+            # request by 1
+            feature_request.priority += 1
+            models.DB.session.add(feature_request)
+            models.DB.session.commit()
 
         return True

@@ -1,3 +1,7 @@
+"""
+flask application initialization module
+"""
+
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask, logging as flask_logging
@@ -30,14 +34,13 @@ app = Flask('feature_requests')
 with app.app_context():
     app.config.from_object(config)
 
-    # initialize migrate to manage db migrations
-    from . import models, forms
-    migrate = Migrate(app, models.db)
-
     # Define database object
     db = SQLAlchemy()
     db.init_app(app)
     app.db = db
+
+    # initialize migrate to manage db migrations
+    migrate = Migrate(app, db)
 
     # add a rotating file handler
     handler = RotatingFileHandler('feature_requests.log', maxBytes=15000, backupCount=2)
@@ -61,11 +64,11 @@ with app.app_context():
     app.marshmallow = marshmallow
 
     # import all routes
-    from .views import *
+    from . import views
 
     # import ajax endpoints
-    from .ajax_views import *
+    from . import ajax_views
 
     # import custom commands
-    from .commands import *
+    from . import commands
 

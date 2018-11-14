@@ -1,3 +1,6 @@
+"""
+account service layer
+"""
 from flask import current_app
 from flask_login import login_user, logout_user
 
@@ -32,8 +35,8 @@ def register(email, password, first_name, last_name):
             email=email,
             password=current_app.bcrypt.generate_password_hash(password).decode('utf-8')
         ))
-    except Exception:
-        raise
+    except Exception as error:
+        raise error
 
 
 def login(email, password, remember=False):

@@ -1,3 +1,7 @@
+"""
+client service layer
+"""
+
 from application import models
 
 from application.services import BaseService
