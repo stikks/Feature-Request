@@ -15,11 +15,10 @@ class BaseConfig(object):
     DEBUG = True
 
     # Defining database address
-    postgres_user = os.getenv('POSTGRES_USER', 'postgres')
-    postgres_pass = os.getenv('POSTGRES_PASS', 'postgres')
-    postgres_host = os.getenv('POSTGRES_HOST', 'localhost')
-    postgres_database = os.getenv('POSTGRES_DATABASE', 'feature_requests')
-    SQLALCHEMY_DATABASE_URI = f"postgresql://{postgres_user}:{postgres_pass}@{postgres_host}/{postgres_database}"
+    SQLALCHEMY_DATABASE_URI = "postgresql://{}:{}@{}/{}".format(os.getenv('POSTGRES_USER', 'postgres'),
+                                                                os.getenv('POSTGRES_PASS', 'postgres'),
+                                                                os.getenv('POSTGRES_HOST', 'localhost'),
+                                                                os.getenv('POSTGRES_DATABASE', 'feature_requests'))
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     # Enable protection against *Cross-site Request Forgery (CSRF)*
@@ -36,10 +35,10 @@ class TestConfig(BaseConfig):
     TESTING = True
 
     # Defining database address
-    postgres_user = os.getenv('POSTGRES_USER', 'postgres')
-    postgres_pass = os.getenv('POSTGRES_PASS', 'postgres')
-    postgres_host = os.getenv('POSTGRES_HOST', 'localhost')
-    postgres_database = os.getenv('POSTGRES_TEST_DATABASE', 'test_feature_requests')
-    SQLALCHEMY_DATABASE_URI = f"postgresql://{postgres_user}:{postgres_pass}@{postgres_host}/{postgres_database}"
+    SQLALCHEMY_DATABASE_URI = "postgresql://{}:{}@{}/{}".format(os.getenv('POSTGRES_USER', 'postgres'),
+                                                                os.getenv('POSTGRES_PASS', 'postgres'),
+                                                                os.getenv('POSTGRES_HOST', 'localhost'),
+                                                                os.getenv('POSTGRES_TEST_DATABASE',
+                                                                          'test_feature_requests'))
 
     CSRF_ENABLED = False
