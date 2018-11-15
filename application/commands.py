@@ -1,12 +1,13 @@
 """
 custom cli commands
 """
-from application import app
+from flask import current_app as app
 
 with app.app_context():
 
     # import services needed
-    from application.services import account, client, feature
+    from utils import create_dummy_data
+
 
     @app.cli.command()
     def setup_app():
@@ -19,23 +20,4 @@ with app.app_context():
         :return:
         """
         # create new employee
-        employee = account.register(**dict(
-            email='ada@iws.com',
-            first_name='Ada',
-            last_name='Lovelace',
-            password='lovelace'
-        ))
-
-        print(f'successfully created dummy employee account - {employee.first_name} {employee.last_name}')
-
-        clients = ['Client A', 'Client B', 'Client C']
-        for obj in clients:
-            client_service = client.ClientService.objects_new(**dict(name=obj))
-            print(f'successfully created dummy client account - {client_service.name}')
-
-        product_areas = ['Policies', 'Billing', 'Claims', 'Reports']
-        for area in product_areas:
-            product_area = feature.ProductAreaService.objects_new(**dict(title=area))
-            print(f'successfully created dummy product areas - {product_area.title}')
-
-        return True
+        return create_dummy_data()

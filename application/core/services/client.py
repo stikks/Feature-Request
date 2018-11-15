@@ -2,9 +2,9 @@
 client service layer
 """
 
-from application import models
+from application.core import models
 
-from application.services import BaseService
+from application.core.services import BaseService
 
 
 ClientService = BaseService.create_model_service(models.Client)

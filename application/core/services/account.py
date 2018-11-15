@@ -4,7 +4,7 @@ account service layer
 from flask import current_app
 from flask_login import login_user, logout_user
 
-from application import models
+from application.core import models
 
 from . import BaseService
 

@@ -2,9 +2,11 @@
 feature requests service layer
 """
 
-from application import models
+from application.core import models
 
-from application.services import BaseService
+from application.core.services import BaseService
+
+from application.database import db
 
 BaseFeatureRequestService = BaseService.create_model_service(models.FeatureRequest)
 ProductAreaService = BaseService.create_model_service(models.ProductArea)
@@ -47,8 +49,8 @@ class FeatureRequestService(BaseFeatureRequestService):
             priority=priority,
             target_date=target_date
         )
-        models.DB.session.add(record)
-        models.DB.session.commit()
+        db.session.add(record)
+        db.session.commit()
 
         return record
 
@@ -75,7 +77,7 @@ class FeatureRequestService(BaseFeatureRequestService):
             # increment priority on each feature
             # request by 1
             feature_request.priority += 1
-            models.DB.session.add(feature_request)
-            models.DB.session.commit()
+            db.session.add(feature_request)
+            db.session.commit()
 
         return True

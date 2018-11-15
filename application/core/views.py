@@ -1,11 +1,14 @@
 """
 application routes
 """
-from flask import current_app, render_template, request, redirect, url_for, flash, abort
+from flask import current_app, render_template, request, redirect, url_for, flash, abort, session
 from flask_login import login_required
 
-from . import forms
-from .services import account, client, feature
+from application import forms
+from application.core.services import client, feature
+from application.core.services import account
+
+from . import core
 
 
 @current_app.errorhandler(404)
@@ -29,7 +32,7 @@ def load_user(employee_id):
     return account.EmployeeService.objects_get(employee_id)
 
 
-@current_app.route('/login', methods=['GET', 'POST'])
+@core.route('/login', methods=['GET', 'POST'])
 def login():
     """
     login route
@@ -47,18 +50,19 @@ def login():
 
     if request.method == 'POST' and form.validate_on_submit():
         data = form.data.copy()
+
         data.pop('csrf_token')
         employee = account.login(**data)
 
         if employee:
-            return redirect(url_for('index'))
+            return redirect(url_for('core.index'))
 
         flash(u'Invalid email/password combination', 'error')
 
     return render_template('login.html', **locals())
 
 
-@current_app.route('/logout', methods=['GET'])
+@core.route('/logout', methods=['GET'])
 @login_required
 def logout():
     """
@@ -68,11 +72,11 @@ def logout():
     :return:
     """
     account.logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('core.login'))
 
 
-@current_app.route('/', methods=['GET'])
-@current_app.route('/clients', methods=['GET'])
+@core.route('/', methods=['GET'])
+@core.route('/clients', methods=['GET'])
 @login_required
 def index():
     """
@@ -84,10 +88,12 @@ def index():
     """
     title = 'Home'
 
+    print(g.user)
+
     return render_template('index.html', **locals())
 
 
-@current_app.route('/clients/<client_slug>/feature-requests', methods=['GET'])
+@core.route('/clients/<client_slug>/feature-requests', methods=['GET'])
 @login_required
 def feature_requests_list(client_slug):
     """
@@ -107,7 +113,7 @@ def feature_requests_list(client_slug):
     return render_template('feature_requests/list.html', **locals())
 
 
-@current_app.route('/clients/<client_slug>/feature-requests/new', methods=['GET', 'POST'])
+@core.route('/clients/<client_slug>/feature-requests/new', methods=['GET', 'POST'])
 @login_required
 def feature_request_create(client_slug):
     """
@@ -142,7 +148,7 @@ def feature_request_create(client_slug):
 
         if feature_request:
             flash('successfully created feature request', 'success')
-            return redirect(url_for('feature_requests_list', client_slug=obj_client.slug))
+            return redirect(url_for('core.feature_requests_list', client_slug=obj_client.slug))
 
     return render_template('feature_requests/new.html', **locals())
 

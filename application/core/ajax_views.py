@@ -3,7 +3,7 @@ ajax route endpoints
 """
 from flask import current_app, request, jsonify
 
-from .services import client, feature
+from application.core.services import client, feature
 from . import schemas
 
 
@@ -43,10 +43,10 @@ def ajax_feature_requests_list(client_slug):
 
     feature_schema = schemas.FeatureRequestSchema()
 
-    data = feature_schema.dump(feature.FeatureRequestService.objects_filter(first_only=False, order_by='priority', 
-        order_direction='asc', **dict(client_id=client_obj.id)), many=True).data
+    data = feature_schema.dump(feature.FeatureRequestService.objects_filter(first_only=False, order_by='priority',
+                                                                            order_direction='asc', **dict(client_id=client_obj.id)), many=True).data
 
     return jsonify({
-        'aaData': [[c.get('title'), c.get('description'), c.get('client')['name'], c.get('priority'), c.get('target_date'), 
-        c.get('product_area')['title']]  for c in data]
+        'aaData': [[c.get('title'), c.get('description'), c.get('client')['name'], c.get('priority'),
+                    c.get('target_date'), c.get('product_area')['title']] for c in data]
     }), 200

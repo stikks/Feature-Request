@@ -1,11 +1,15 @@
+"""
+service initialization module
+"""
 # for class check
 import inspect
 from sqlalchemy.exc import InvalidRequestError, DataError
 
-from application.models import current_app
+from flask import current_app
+from application.database import db
 
 logger = getattr(current_app, 'logger')
-db = getattr(current_app, 'db')
+
 
 class BaseService(object):
     """

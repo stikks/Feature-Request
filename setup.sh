@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ -z $POSTGRES_USER ] || [ -z $POSTGRES_DATABASE ] || [ -z $POSTGRES_HOST ] || [ -z $POSTGRES_PASS ]; then
-    echo 'You need to set environment variables POSTGRES_USER, POSTGRES_HOST, POSTGRES_PASS and POSTGRES_DATABASE'; exit $ERRCODE;
+if [ -z $POSTGRES_USER ] || [ -z $POSTGRES_DATABASE ] || [ -z $POSTGRES_HOST ] || [ -z $POSTGRES_PASS ] || [ -z $POSTGRES_TEST_DATABASE ]; then
+    echo 'You need to set environment variables POSTGRES_USER, POSTGRES_HOST, POSTGRES_PASS, POSTGRES_TEST_DATABASE and POSTGRES_DATABASE'; exit $ERRCODE;
 fi
 
 # setup virtual environment
@@ -20,6 +20,10 @@ pip3 install -r requirements.txt
 # create database
 echo 'setup database'
 psql -U $POSTGRES_USER -h $POSTGRES_HOST -c "create database $POSTGRES_DATABASE"
+
+# create test database
+echo 'setup test database'
+psql -U $POSTGRES_USER -h $POSTGRES_HOST -c "create database $POSTGRES_TEST_DATABASE"
 
 # set flask environment as development
 export FLASK_ENV='development'
