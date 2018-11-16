@@ -1,7 +1,7 @@
 """
 application routes
 """
-from flask import current_app, render_template, request, redirect, url_for, flash, abort, session
+from flask import current_app, render_template, request, redirect, url_for, flash, abort
 from flask_login import login_required
 
 from application import forms
@@ -87,8 +87,6 @@ def index():
     :return:
     """
     title = 'Home'
-
-    print(g.user)
 
     return render_template('index.html', **locals())
 
