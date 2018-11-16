@@ -22,6 +22,11 @@ flask run
 visit http://localhost:5000 to view application
 ```
 
+Log on using credentials
+> email - ada@iws.com
+
+> password - lovelace
+
 ### Initial Configuration
 
 ## Developing
