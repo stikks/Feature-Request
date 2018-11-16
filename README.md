@@ -16,12 +16,6 @@ Flask extensions
 
 you can find the list of dependencies in the requirements.txt file
 
-```shell
-flask run
-
-visit http://localhost:5000 to view application
-```
-
 Log on using credentials
 > email - ada@iws.com
 
@@ -43,15 +37,16 @@ To setup the application, you need to have the following installed
  #### Environment Variables
  
 You need to set the following environment variables
-> POSTGRES_HOST - postgresql host
+```bash
+    export POSTGRES_HOST='postgres'
+    export POSTGRES_PASS='postgres'
+    export POSTGRES_USER='localhost'
+    export POSTGRES_DATABASE='feature_requests'
+    export POSTGRES_TEST_DATABASE='test_feature_requests'
+```
+Note: change values above to match your postgresql instance
 
-> POSTGRES_PASS - postgresql password
-
-> POSTGRES_USER - postgresql user
-
-> POSTGRES_DATABASE - application database
-
-> POSTGRES_TEST_DATABASE - test database
+### Setup Application
  
 ```shell
 git clone https://github.com/stikks/Feature-Request.git
@@ -124,6 +119,15 @@ and
 export FLASK_ENV='production'
 ```
 for production mode
+
+
+### Running Application
+
+```shell
+flask run
+
+visit http://localhost:5000 to view application
+```
 
 
 ## Contributing
