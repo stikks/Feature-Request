@@ -130,12 +130,7 @@ def feature_request_create(client_slug):
 
     product_areas = feature.ProductAreaService.objects_all()
 
-    model_class = feature.FeatureRequestService.model_class
-    db = current_app.db
-
-    sub = db.session.query(db.func.max(model_class.priority).label('ml')).subquery()
-    feature_request = db.session.query(model_class).join(sub, sub.c.ml == model_class.priority).one()
-    max_value = feature_request.priority + 1 if feature_request else 1
+    max_value = feature.FeatureRequestService.compute_max_value()
 
     form = forms.FeatureRequestForm()
 

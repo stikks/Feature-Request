@@ -81,3 +81,15 @@ class FeatureRequestService(BaseFeatureRequestService):
             db.session.commit()
 
         return True
+
+    @staticmethod
+    def compute_max_value():
+        """
+        computes max value of currently stored feature requests
+        :return:
+        """
+        model_class = BaseFeatureRequestService.model_class
+
+        sub = db.session.query(db.func.max(model_class.priority).label('ml')).subquery()
+        feature_request = db.session.query(model_class).join(sub, sub.c.ml == model_class.priority).first()
+        return feature_request.priority + 1 if feature_request else 1
