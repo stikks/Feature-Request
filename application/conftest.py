@@ -1,12 +1,14 @@
 from sqlalchemy.schema import MetaData, DropConstraint
 import pytest
 
+from flask_wtf.csrf import generate_csrf
+
 from application.factories import create_app
 from application.database import db
 
 import config
 
-from utils import create_test_dummy_data
+from utils import create_dummy_data
 
 
 @pytest.fixture(scope='session')
@@ -31,12 +33,12 @@ def app(request):
         db.create_all()
 
         # insert test data
-        create_test_dummy_data()
+        create_dummy_data()
 
         yield app
 
         # remove temporary tables in database
-        # metadata.drop_all()
+        request.addfinalizer(metadata.drop_all)
 
 
 @pytest.fixture(scope='session')
@@ -56,13 +58,30 @@ class AuthActions(object):
     def login(self, username='ada@iws.com', password='lovelace'):
         return self._client.post(
             '/login',
-            data={'email': username, 'password': password}
+            data={'email': username, 'password': password, 'csrf_token': generate_csrf()}
         )
 
     def logout(self):
         return self._client.get('/logout')
 
 
-@pytest.fixture
-def auth(client):
+@pytest.fixture(scope='session')
+def user(app):
+    return
+
+
+@pytest.fixture(scope='session')
+def auth(client, app):
+
+    @app.login_manager.user_loader
+    def load_user(employee_id):
+        """
+        returns user object if session authenticated
+        else None
+        :param employee_id:
+        :return:
+        """
+        from application.core.services import account
+        return account.EmployeeService.objects_get(employee_id)
+
     return AuthActions(client)

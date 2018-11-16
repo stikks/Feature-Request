@@ -29,36 +29,3 @@ def create_dummy_data():
         print(f'successfully created dummy product areas - {product_area.title}')
 
     return True
-
-
-def create_test_dummy_data():
-    """
-    insert dummy records
-    :return:
-    """
-
-    # insert dummy employee, client and product area
-    # records
-    create_dummy_data()
-
-    # insert first dummy feature request data
-    feature.FeatureRequestService.objects_new(
-        client_id=1,
-        title='Nivea',
-        description='Design new page for nivea cream product',
-        product_area_id=1,
-        priority=1,
-        target_date=date.today() + timedelta(days=20)
-    )
-
-    # insert second dummy feature request data
-    feature.FeatureRequestService.objects_new(
-        client_id=1,
-        title='Nivea Oil',
-        description='Design new page for nivea oil product',
-        product_area_id=2,
-        priority=1,
-        target_date=date.today() + timedelta(days=30)
-    )
-
-    return True
