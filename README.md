@@ -9,7 +9,12 @@ A web application that allows the user to create "feature requests". A "feature 
 
 A quick introduction of the minimal setup you need to get the feature requests web application up & running.
 
-This app was built using Flask microframework, you can find the list of dependencies in the requirements.txt file
+This app was built using 
+Python 3.6.5
+Flask micro-framework
+Flask extensions
+
+you can find the list of dependencies in the requirements.txt file
 
 ```shell
 flask run
@@ -25,56 +30,97 @@ Here's a brief intro about what a developer must do in order to start developing
 the project further on a Linux machine:
 
 To setup the application, you need to have the following installed
- - python ( preferably python3 )
+ - python3.6 
  - virtualenv ( to setup virtual environment )
  - postgresql ( database )
+ - Linux OS
+ 
+ #### Environment Variables
+ 
+You need to set the following environment variables
+> POSTGRES_HOST - postgresql host
 
+> POSTGRES_PASS - postgresql password
+
+> POSTGRES_USER - postgresql user
+
+> POSTGRES_DATABASE - application database
+
+> POSTGRES_TEST_DATABASE - test database
+ 
 ```shell
 git clone https://github.com/stikks/Feature-Request.git
 cd Feature-Request
 
-# create a virtual environment
-virtualenv venv
-. venv/bin/activate
-pip install -r requirements.txt
+# run setup bash script
+bash setup.sh
+```
 
-## setting up database connection
-psql -U {username} -h {host} -c "create database {db name}"
+##### Setup Script
 
-## postgresql configuration
-default postgresql connection URI
- - SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost/feature_requests"
-   - "postgresql://{username}:{password}@{host}/{db name}"
+This script makes setting up easier and contains the following commands
 
- change value in "config.py" to match
+```shell
+# setup virtual environment
+# echo 'setting up virtual environment'
+pip3 install -U virtualenv
 
-# initialize migrations
+# activate virtual environment
+echo 'activating virtual environment'
+virtualenv -p python3 venv
+source venv/bin/activate
+
+# install required packages
+echo 'installing requirements'
+pip3 install -r requirements.txt
+
+# create database
+echo 'setup database'
+psql -U $POSTGRES_USER -h $POSTGRES_HOST -c "create database $POSTGRES_DATABASE"
+
+# create test database
+echo 'setup test database'
+psql -U $POSTGRES_USER -h $POSTGRES_HOST -c "create database $POSTGRES_TEST_DATABASE"
+
+# set flask environment as development
+export FLASK_ENV='development'
+
+# setup migrations and migrate database
+echo 'setup migrations and upgrade'
 flask db init
 flask db migrate
 flask db upgrade
 
+# setup application
+flask setup-app
+
+# run application
 flask run
 ```
+ 
 
-### Building Executable
+### Building Application
 
-To build executable ( on linux )
+To build application, run
 
 ```shell
-pyinstaller -w -F --add-data "app:app" --add-data "migrations:migrations" --add-data "templates:templates" --add-data "static:static" -p /home/stikks/Documents/projects/Interview_Calendar/venv/lib/python3.5/site-packages setup.py
-
-# run executable using
-./dist/setup
-
-visit http://localhost:5055 to view application
+pip install -e .
 ```
 
 ## Configuration
 
-If you want to run the app in development mode, run
+To run the app in development mode, run
 ```shell
 export FLASK_ENV='development'
 ```
+
+and 
+```shell
+export FLASK_ENV='production'
+```
+for production mode
+
+
 ## Contributing
 
 If you'd like to contribute, please fork the repository and use a feature
