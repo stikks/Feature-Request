@@ -1,0 +1,14 @@
+server {
+    listen 8045;
+    server_name _;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /opt/Feature-Request/application/core/;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/opt/Feature-Request/feature.sock;
+    }
+}
