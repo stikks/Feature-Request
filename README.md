@@ -127,6 +127,13 @@ flask run
 visit http://localhost:5000 to view application
 ```
 
+#### Accessing Application
+Demo credentials for accessing the application
+```pydocstring
+username - ada@iws.com
+password - lovelace
+```
+
 ## Deployment
 
 This describes the deployment process on an Ubuntu Cloud VPS. 
