@@ -5,11 +5,12 @@ from flask import current_app
 from flask_login import login_user, logout_user
 
 from application.core import models
+from application import forms
 
 from . import BaseService
 
 
-EmployeeService = BaseService.create_model_service(models.Employee)
+EmployeeService = BaseService.create_model_service(models.Employee, forms.EmployeeForm)
 
 
 def register(email, password, first_name, last_name):

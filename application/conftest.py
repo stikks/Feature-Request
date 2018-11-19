@@ -2,6 +2,7 @@ from sqlalchemy.schema import MetaData, DropConstraint
 import pytest
 
 from flask_wtf.csrf import generate_csrf
+from flask_pytest import FlaskPytest
 
 from application.factories import create_app
 from application.database import db
@@ -35,6 +36,8 @@ def app(request):
         # insert test data
         create_dummy_data()
 
+        app = FlaskPytest(app)
+
         yield app
 
         # remove temporary tables in database
@@ -56,6 +59,12 @@ class AuthActions(object):
         self._client = client
 
     def login(self, username='ada@iws.com', password='lovelace'):
+        return self._client.post(
+            '/login',
+            data={'email': username, 'password': password, 'csrf_token': generate_csrf()}
+        )
+
+    def invalid_login(self, username='abc@iws.com', password='lovelorn'):
         return self._client.post(
             '/login',
             data={'email': username, 'password': password, 'csrf_token': generate_csrf()}

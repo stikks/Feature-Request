@@ -90,7 +90,7 @@ def create_app(app_name='feature_requests', app_config=config.BaseConfig):
     Appropriately name the application
     Read application config from config.py
     """
-    app = Flask(app_name)
+    app = Flask(app_name, static_folder=None)
 
     with app.app_context():
         app.config.from_object(app_config)

@@ -1,13 +1,17 @@
 """
 test authentication
 """
-from flask import session, g
+from flask import session
+from flask_login import current_user
 
 
-def test_login(client, auth):
-    # test that viewing the page renders without template errors
-    assert client.get('/login').status_code == 200
-
+def test_login_user(client, auth):
+    """
+    tests user login request
+    :param client:
+    :param auth:
+    :return:
+    """
     # test that successful login redirects to the index page
     response = auth.login()
     assert response.headers['Location'] == 'http://localhost/clients'
@@ -16,7 +20,34 @@ def test_login(client, auth):
     # check that the user is loaded from the session
     with client:
         client.get('/')
+
+        # check against session
         assert session['user_id'] == '1'
+
+        # check against flask login authentication check
+        assert current_user.is_authenticated is True
+
+
+def test_invalid_login_parameters(client, auth):
+    """
+    tests invalid login parameters
+    :param client:
+    :param auth:
+    :return:
+    """
+    # test that successful login redirects to the index page
+    with client:
+        # logs out any current sessions
+        auth.logout()
+
+        # logs in using invalid parameters
+        auth.invalid_login()
+
+        # checks session
+        assert session.get('user_id') is None
+
+        # checks flask login authentication
+        assert current_user.is_authenticated is False
 
 
 def test_logout(client, auth):

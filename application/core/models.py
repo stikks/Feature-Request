@@ -9,6 +9,7 @@ from flask_login import UserMixin
 # Import SQLAlchemy
 from sqlalchemy.inspection import inspect
 from sqlalchemy import event
+from sqlalchemy_utils.types import EmailType
 
 # import slugify
 from slugify import slugify
@@ -82,7 +83,7 @@ class Employee(Abstract, UserMixin):
     """ Employee model class"""
     first_name = db.Column(db.String(255), nullable=False)
     last_name = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(200), unique=True, nullable=False)
+    email = db.Column(EmailType, unique=True, nullable=False)
     password = db.Column(db.Text)
 
     def __repr__(self):

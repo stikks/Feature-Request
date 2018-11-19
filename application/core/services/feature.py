@@ -4,20 +4,23 @@ feature requests service layer
 
 from application.core import models
 
-from application.core.services import BaseService
+from application.core.services import BaseService, client as client_service
 
 from application.database import db
 
-BaseFeatureRequestService = BaseService.create_model_service(models.FeatureRequest)
-ProductAreaService = BaseService.create_model_service(models.ProductArea)
+from application import forms
+
+
+BaseFeatureRequestService = BaseService.create_model_service(models.FeatureRequest, forms.FeatureRequestForm)
+ProductAreaService = BaseService.create_model_service(models.ProductArea, forms.ProductAreaForm)
 
 
 class FeatureRequestService(BaseFeatureRequestService):
     """
-    featureequest service class
+    feature equest service class
 
     custom modification to base class
-    basefeaturerequestservice to accomodate
+    basefeaturerequest service to accommodate
     re-ordering of priorities
     """
 
@@ -35,17 +38,29 @@ class FeatureRequestService(BaseFeatureRequestService):
         :param target_date
         :return:
         """
+        # verify client
+        client = client_service.ClientService.objects_get(client_id)
+
+        if not client:
+            raise ValueError('Client with id - {} not found'.format(client_id))
+
+        # verify product area
+        product_area = ProductAreaService.objects_get(product_area_id)
+
+        if not product_area:
+            raise ValueError('ProductArea with id - {} not found'.format(product_area_id))
+
         # re-order feature requests with a priority greater than/equal
         # to the new feature request, before creating the new
         # feature request if a feature request with such priority exists
-        if cls.objects_filter(**dict(client_id=client_id, priority=priority)):
-            cls.reorder_priorities(client_id=client_id, priority=priority)
+        if cls.objects_filter(**dict(client_id=client.id, priority=priority)):
+            cls.reorder_priorities(client_id=client.id, priority=priority)
 
-        record = cls.model_class(
+        record = BaseFeatureRequestService.objects_new(
             title=title,
             description=description,
-            client_id=client_id,
-            product_area_id=product_area_id,
+            client_id=client.id,
+            product_area_id=product_area.id,
             priority=priority,
             target_date=target_date
         )

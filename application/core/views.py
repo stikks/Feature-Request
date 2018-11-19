@@ -1,6 +1,8 @@
 """
 application routes
 """
+import os
+
 from flask import current_app, render_template, request, redirect, url_for, flash, abort
 from flask_login import login_required
 
@@ -132,7 +134,7 @@ def feature_request_create(client_slug):
 
     max_value = feature.FeatureRequestService.compute_max_value()
 
-    form = forms.FeatureRequestForm()
+    form = forms.FeatureRequestFlaskForm()
 
     if request.method == 'POST' and form.validate_on_submit():
         data = form.data.copy()
@@ -145,3 +147,11 @@ def feature_request_create(client_slug):
 
     return render_template('feature_requests/new.html', **locals())
 
+
+@core.route('/static/<static_path>')
+def send_js(static_path):
+    print('============')
+    print(static_path)
+    print('============')
+    return current_app.send_static_file(static_path)
+    # return send_from_directory('static', path)
