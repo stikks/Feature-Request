@@ -9,6 +9,7 @@ Here's a quick introduction of the minimal setup you need to get the feature req
 
 Here are the things you need to setup the application
  - python3.6 
+ - python3-pip
  - virtualenv ( to setup virtual environment )
  - postgresql ( database )
  - Linux OS
